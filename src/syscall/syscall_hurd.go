@@ -609,6 +609,7 @@ func raw_ptrace(request int, pid int, addr *byte, data *byte) Errno {
 //sysnb	Setgid(gid int) (err error)
 //sysnb	Setuid(uid int) (err error)
 //sysnb	Setpgid(pid int, pgid int) (err error)
+//sys	Getsid(pid int) (sid int, err error) = getsid
 //sys	Setpriority(which int, who int, prio int) (err error)
 //sysnb	Setregid(rgid int, egid int) (err error)
 //sysnb	Setreuid(ruid int, euid int) (err error)

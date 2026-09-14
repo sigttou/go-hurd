@@ -7,6 +7,7 @@
 package net
 
 import (
+	"errors"
 	"os"
 	"syscall"
 )
@@ -24,8 +25,13 @@ func setDefaultSockopts(s, family, sotype int, ipv6only bool) error {
 }
 
 func setDefaultListenerSockopts(s int) error {
-	// Allow reuse of recently-used addresses.
-	return os.NewSyscallError("setsockopt", syscall.SetsockoptInt(s, syscall.SOL_SOCKET, syscall.SO_REUSEADDR, 1))
+	// Allow reuse of recently-used addresses. Hurd rejects SO_REUSEADDR on
+	// AF_UNIX sockets with ENOPROTOOPT; that is harmless, so ignore it.
+	err := syscall.SetsockoptInt(s, syscall.SOL_SOCKET, syscall.SO_REUSEADDR, 1)
+	if err != nil && !errors.Is(err, syscall.ENOPROTOOPT) {
+		return os.NewSyscallError("setsockopt", err)
+	}
+	return nil
 }
 
 func setDefaultMulticastSockopts(s int) error {
@@ -35,5 +41,9 @@ func setDefaultMulticastSockopts(s int) error {
 		return os.NewSyscallError("setsockopt", err)
 	}
 	// Allow reuse of recently-used ports.
-	return os.NewSyscallError("setsockopt", syscall.SetsockoptInt(s, syscall.SOL_SOCKET, syscall.SO_REUSEPORT, 1))
+	err := syscall.SetsockoptInt(s, syscall.SOL_SOCKET, syscall.SO_REUSEPORT, 1)
+	if err != nil && !errors.Is(err, syscall.ENOPROTOOPT) {
+		return os.NewSyscallError("setsockopt", err)
+	}
+	return nil
 }

@@ -301,11 +301,9 @@ func munmap(addr unsafe.Pointer, n uintptr) {
 
 //go:nosplit
 func madvise(addr unsafe.Pointer, n uintptr, flags int32) {
-	r, err := syscall3(&libc_madvise, uintptr(addr), uintptr(n), uintptr(flags))
-	if int32(r) == -1 {
-		println("syscall madvise failed: ", hex(err))
-		throw("syscall madvise")
-	}
+	// madvise is advisory. GNU/Hurd's glibc returns ENOSYS for
+	// MADV_DONTNEED, so failures must not be fatal.
+	syscall3(&libc_madvise, uintptr(addr), uintptr(n), uintptr(flags))
 }
 
 //go:nosplit

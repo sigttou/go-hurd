@@ -132,6 +132,8 @@ DATA ·libc_getpeername+0(SB)/4, $imp_libc_getpeername(SB)
 GLOBL ·libc_getpeername(SB), NOPTR, $4
 DATA ·libc_getrlimit64+0(SB)/4, $imp_libc_getrlimit64(SB)
 GLOBL ·libc_getrlimit64(SB), NOPTR, $4
+DATA ·libc_getsid+0(SB)/4, $imp_libc_getsid(SB)
+GLOBL ·libc_getsid(SB), NOPTR, $4
 DATA ·libc_getsockname+0(SB)/4, $imp_libc_getsockname(SB)
 GLOBL ·libc_getsockname(SB), NOPTR, $4
 DATA ·libc_getsockopt+0(SB)/4, $imp_libc_getsockopt(SB)

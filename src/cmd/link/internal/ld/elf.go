@@ -2486,5 +2486,16 @@ func elfadddynsym(ldr *loader.Loader, target *Target, syms *ArchSyms, s loader.S
 		} else {
 			d.AddUint16(target.Arch, 1)
 		}
+
+		// Record the shared library an imported symbol comes from so the
+		// 32-bit path also emits DT_NEEDED, like the 64-bit path above.
+		// Without it the dynamic linker loads no library and the imported
+		// symbols stay unresolved.
+		dil := ldr.SymDynimplib(s)
+		if !cgoeDynamic && dil != "" && !seenlib[dil] {
+			du := ldr.MakeSymbolUpdater(syms.Dynamic)
+			Elfwritedynent(target.Arch, du, elf.DT_NEEDED, uint64(dstru.Addstring(dil)))
+			seenlib[dil] = true
+		}
 	}
 }

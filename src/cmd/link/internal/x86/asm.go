@@ -294,7 +294,7 @@ func adddynrel(target *ld.Target, ldr *loader.Loader, syms *ld.ArchSyms, s loade
 		return true
 
 	case objabi.R_ADDR:
-		if !ldr.SymType(s).IsDATA() {
+		if !ldr.SymType(s).IsData() {
 			break
 		}
 		if target.IsElf() {

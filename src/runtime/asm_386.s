@@ -203,6 +203,11 @@ needtls:
 	// skip runtime·ldt0setup(SB) and tls test on Plan 9 in all cases
 	JMP	ok
 #endif
+#ifdef GOOS_hurd
+	// Hurd uses glibc-managed TLS: ld.so has already set up %gs for the
+	// main thread, so do not run ldt0setup.
+	JMP	ok
+#endif
 
 	// set up %gs
 	CALL	ldt0setup<>(SB)
@@ -931,6 +936,10 @@ rdtsc:
 	JMP done
 
 TEXT ldt0setup<>(SB),NOSPLIT,$16-0
+#ifdef GOOS_hurd
+	// Hurd uses glibc-managed TLS: ld.so sets up %gs, so setldt is unused.
+	RET
+#else
 #ifdef GOOS_windows
 	CALL	runtime·wintls(SB)
 #endif
@@ -943,6 +952,7 @@ TEXT ldt0setup<>(SB),NOSPLIT,$16-0
 	MOVL	$32, 8(SP)	// sizeof(tls array)
 	CALL	runtime·setldt(SB)
 	RET
+#endif
 
 TEXT runtime·emptyfunc(SB),0,$0-0
 	RET

@@ -17,113 +17,61 @@ import (
 	"unsafe"
 )
 
-//go:cgo_import_dynamic libc__errno_location __errno_location "libc.so.0.3"
-//go:cgo_import_dynamic libc_clock_gettime clock_gettime "libc.so.0.3"
-//go:cgo_import_dynamic libc_close close "libc.so.0.3"
-//go:cgo_import_dynamic libc_exit _exit "libc.so.0.3"
-//go:cgo_import_dynamic libc_fcntl fcntl "libc.so.0.3"
-//go:cgo_import_dynamic libc_getpid getpid "libc.so.0.3"
-//go:cgo_import_dynamic libc_getuid getuid "libc.so.0.3"
-//go:cgo_import_dynamic libc_geteuid geteuid "libc.so.0.3"
-//go:cgo_import_dynamic libc_getgid getgid "libc.so.0.3"
-//go:cgo_import_dynamic libc_getegid getegid "libc.so.0.3"
-//go:cgo_import_dynamic libc_kill kill "libc.so.0.3"
-//go:cgo_import_dynamic libc_madvise madvise "libc.so.0.3"
-//go:cgo_import_dynamic libc_malloc malloc "libc.so.0.3"
-//go:cgo_import_dynamic libc_mmap mmap "libc.so.0.3"
-//go:cgo_import_dynamic libc_mprotect mprotect "libc.so.0.3"
-//go:cgo_import_dynamic libc_munmap munmap "libc.so.0.3"
-//go:cgo_import_dynamic libc_open open "libc.so.0.3"
-//go:cgo_import_dynamic libc_pipe pipe "libc.so.0.3"
-//go:cgo_import_dynamic libc_poll poll "libc.so.0.3"
-//go:cgo_import_dynamic libc_raise raise "libc.so.0.3"
-//go:cgo_import_dynamic libc_read read "libc.so.0.3"
-//go:cgo_import_dynamic libc_sched_yield sched_yield "libc.so.0.3"
-//go:cgo_import_dynamic libc_sem_init sem_init "libc.so.0.3"
-//go:cgo_import_dynamic libc_sem_post sem_post "libc.so.0.3"
-//go:cgo_import_dynamic libc_sem_timedwait sem_timedwait "libc.so.0.3"
-//go:cgo_import_dynamic libc_sem_wait sem_wait "libc.so.0.3"
-//go:cgo_import_dynamic libc_setitimer setitimer "libc.so.0.3"
-//go:cgo_import_dynamic libc_sigaction sigaction "libc.so.0.3"
-//go:cgo_import_dynamic libc_sigaltstack sigaltstack "libc.so.0.3"
-//go:cgo_import_dynamic libc_sysconf sysconf "libc.so.0.3"
-//go:cgo_import_dynamic libc_usleep usleep "libc.so.0.3"
-//go:cgo_import_dynamic libc_write write "libc.so.0.3"
-//go:cgo_import_dynamic libc_chdir chdir "libc.so.0.3"
-//go:cgo_import_dynamic libc_chroot chroot "libc.so.0.3"
-//go:cgo_import_dynamic libc_dup2 dup2 "libc.so.0.3"
-//go:cgo_import_dynamic libc_execve execve "libc.so.0.3"
-//go:cgo_import_dynamic libc_fork fork "libc.so.0.3"
-//go:cgo_import_dynamic libc_ioctl ioctl "libc.so.0.3"
-//go:cgo_import_dynamic libc_setgid setgid "libc.so.0.3"
-//go:cgo_import_dynamic libc_setgroups setgroups "libc.so.0.3"
-//go:cgo_import_dynamic libc_setrlimit setrlimit "libc.so.0.3"
-//go:cgo_import_dynamic libc_setsid setsid "libc.so.0.3"
-//go:cgo_import_dynamic libc_setuid setuid "libc.so.0.3"
-//go:cgo_import_dynamic libc_setpgid setpgid "libc.so.0.3"
-//go:cgo_import_dynamic libc_pthread_sigmask pthread_sigmask "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc__errno_location __errno_location "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_clock_gettime clock_gettime "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_close close "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_exit _exit "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_fcntl fcntl "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_getpid getpid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_getuid getuid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_geteuid geteuid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_getgid getgid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_getegid getegid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_kill kill "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_madvise madvise "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_malloc malloc "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_mmap mmap "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_mprotect mprotect "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_munmap munmap "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_open open "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_pipe pipe "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_poll poll "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_raise raise "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_read read "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sched_yield sched_yield "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sem_init sem_init "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sem_post sem_post "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sem_timedwait sem_timedwait "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sem_wait sem_wait "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_setitimer setitimer "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sigaction sigaction "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sigaltstack sigaltstack "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_sysconf sysconf "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_usleep usleep "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_write write "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_chdir chdir "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_chroot chroot "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_dup2 dup2 "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_execve execve "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_fork fork "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_ioctl ioctl "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_setgid setgid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_setgroups setgroups "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_setrlimit setrlimit "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_setsid setsid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_setuid setuid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_setpgid setpgid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_pthread_sigmask pthread_sigmask "libc.so.0.3"
 
-//go:cgo_import_dynamic libpthread_attr_destroy pthread_attr_destroy "libc.so.0.3"
-//go:cgo_import_dynamic libpthread_attr_init pthread_attr_init "libc.so.0.3"
-//go:cgo_import_dynamic libpthread_attr_setstacksize pthread_attr_setstacksize "libc.so.0.3"
-//go:cgo_import_dynamic libpthread_attr_setdetachstate pthread_attr_setdetachstate "libc.so.0.3"
-//go:cgo_import_dynamic libpthread_create pthread_create "libc.so.0.3"
-//go:cgo_import_dynamic libpthread_self pthread_self "libc.so.0.3"
-//go:cgo_import_dynamic libpthread_kill pthread_kill "libc.so.0.3"
+//go:cgo_import_dynamic imp_libpthread_attr_destroy pthread_attr_destroy "libc.so.0.3"
+//go:cgo_import_dynamic imp_libpthread_attr_init pthread_attr_init "libc.so.0.3"
+//go:cgo_import_dynamic imp_libpthread_attr_setstacksize pthread_attr_setstacksize "libc.so.0.3"
+//go:cgo_import_dynamic imp_libpthread_attr_setdetachstate pthread_attr_setdetachstate "libc.so.0.3"
+//go:cgo_import_dynamic imp_libpthread_create pthread_create "libc.so.0.3"
+//go:cgo_import_dynamic imp_libpthread_self pthread_self "libc.so.0.3"
+//go:cgo_import_dynamic imp_libpthread_kill pthread_kill "libc.so.0.3"
 
-//go:linkname libc__errno_location libc__errno_location
-//go:linkname libc_clock_gettime libc_clock_gettime
-//go:linkname libc_close libc_close
-//go:linkname libc_exit libc_exit
-//go:linkname libc_fcntl libc_fcntl
-//go:linkname libc_getpid libc_getpid
-//go:linkname libc_getuid libc_getuid
-//go:linkname libc_geteuid libc_geteuid
-//go:linkname libc_getgid libc_getgid
-//go:linkname libc_getegid libc_getegid
-//go:linkname libc_kill libc_kill
-//go:linkname libc_madvise libc_madvise
-//go:linkname libc_malloc libc_malloc
-//go:linkname libc_mmap libc_mmap
-//go:linkname libc_mprotect libc_mprotect
-//go:linkname libc_munmap libc_munmap
-//go:linkname libc_open libc_open
-//go:linkname libc_pipe libc_pipe
-//go:linkname libc_poll libc_poll
-//go:linkname libc_raise libc_raise
-//go:linkname libc_read libc_read
-//go:linkname libc_sched_yield libc_sched_yield
-//go:linkname libc_sem_init libc_sem_init
-//go:linkname libc_sem_post libc_sem_post
-//go:linkname libc_sem_timedwait libc_sem_timedwait
-//go:linkname libc_sem_wait libc_sem_wait
-//go:linkname libc_setitimer libc_setitimer
-//go:linkname libc_sigaction libc_sigaction
-//go:linkname libc_sigaltstack libc_sigaltstack
-//go:linkname libc_sysconf libc_sysconf
-//go:linkname libc_usleep libc_usleep
-//go:linkname libc_write libc_write
-//go:linkname libc_chdir libc_chdir
-//go:linkname libc_chroot libc_chroot
-//go:linkname libc_dup2 libc_dup2
-//go:linkname libc_execve libc_execve
-//go:linkname libc_fork libc_fork
-//go:linkname libc_ioctl libc_ioctl
-//go:linkname libc_setgid libc_setgid
-//go:linkname libc_setgroups libc_setgroups
-//go:linkname libc_setrlimit libc_setrlimit
-//go:linkname libc_setsid libc_setsid
-//go:linkname libc_setuid libc_setuid
-//go:linkname libc_setpgid libc_setpgid
-//go:linkname libc_pthread_sigmask libc_pthread_sigmask
 
-//go:linkname libpthread_attr_destroy libpthread_attr_destroy
-//go:linkname libpthread_attr_init libpthread_attr_init
-//go:linkname libpthread_attr_setstacksize libpthread_attr_setstacksize
-//go:linkname libpthread_attr_setdetachstate libpthread_attr_setdetachstate
-//go:linkname libpthread_create libpthread_create
-//go:linkname libpthread_self libpthread_self
-//go:linkname libpthread_kill libpthread_kill
 
 var (
 	libc__errno_location,

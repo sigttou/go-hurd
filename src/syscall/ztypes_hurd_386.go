@@ -250,6 +250,16 @@ type Utsname struct {
 	Machine  [1024]int8
 }
 
+type Ifaddrs struct {
+	Next    *Ifaddrs
+	Name    *byte
+	Flags   uint32
+	Addr    *RawSockaddr
+	Netmask *RawSockaddr
+	Ifu     *RawSockaddr
+	Data    *byte
+}
+
 type Termios struct {
 	Iflag  uint32
 	Oflag  uint32

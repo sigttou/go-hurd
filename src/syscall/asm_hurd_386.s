@@ -114,6 +114,8 @@ DATA ·libc_fcntl+0(SB)/4, $imp_libc_fcntl(SB)
 GLOBL ·libc_fcntl(SB), NOPTR, $4
 DATA ·libc_fdopendir+0(SB)/4, $imp_libc_fdopendir(SB)
 GLOBL ·libc_fdopendir(SB), NOPTR, $4
+DATA ·libc_freeifaddrs+0(SB)/4, $imp_libc_freeifaddrs(SB)
+GLOBL ·libc_freeifaddrs(SB), NOPTR, $4
 DATA ·libc_fstat64+0(SB)/4, $imp_libc_fstat64(SB)
 GLOBL ·libc_fstat64(SB), NOPTR, $4
 DATA ·libc_fstatat64+0(SB)/4, $imp_libc_fstatat64(SB)
@@ -128,6 +130,8 @@ DATA ·libc_getcwd+0(SB)/4, $imp_libc_getcwd(SB)
 GLOBL ·libc_getcwd(SB), NOPTR, $4
 DATA ·libc_getgroups+0(SB)/4, $imp_libc_getgroups(SB)
 GLOBL ·libc_getgroups(SB), NOPTR, $4
+DATA ·libc_getifaddrs+0(SB)/4, $imp_libc_getifaddrs(SB)
+GLOBL ·libc_getifaddrs(SB), NOPTR, $4
 DATA ·libc_getpeername+0(SB)/4, $imp_libc_getpeername(SB)
 GLOBL ·libc_getpeername(SB), NOPTR, $4
 DATA ·libc_getrlimit64+0(SB)/4, $imp_libc_getrlimit64(SB)
@@ -140,6 +144,8 @@ DATA ·libc_getsockopt+0(SB)/4, $imp_libc_getsockopt(SB)
 GLOBL ·libc_getsockopt(SB), NOPTR, $4
 DATA ·libc_gettimeofday+0(SB)/4, $imp_libc_gettimeofday(SB)
 GLOBL ·libc_gettimeofday(SB), NOPTR, $4
+DATA ·libc_if_nametoindex+0(SB)/4, $imp_libc_if_nametoindex(SB)
+GLOBL ·libc_if_nametoindex(SB), NOPTR, $4
 DATA ·libc_listen+0(SB)/4, $imp_libc_listen(SB)
 GLOBL ·libc_listen(SB), NOPTR, $4
 DATA ·libc_lseek64+0(SB)/4, $imp_libc_lseek64(SB)

@@ -294,6 +294,9 @@ func Wait4(pid int, wstatus *WaitStatus, options int, rusage *Rusage) (wpid int,
 }
 
 //sys	fsync(fd int) (err error)
+//sys	Getifaddrs(ifap **Ifaddrs) (err error) = getifaddrs
+//sys	Freeifaddrs(ifa *Ifaddrs) = freeifaddrs
+//sys	Ifnametoindex(name *byte) (index uint32) = if_nametoindex
 
 func Fsync(fd int) error {
 	return fsync(fd)

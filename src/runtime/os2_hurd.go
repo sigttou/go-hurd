@@ -71,8 +71,6 @@ import (
 //go:cgo_import_dynamic imp_libpthread_self pthread_self "libc.so.0.3"
 //go:cgo_import_dynamic imp_libpthread_kill pthread_kill "libc.so.0.3"
 
-
-
 var (
 	libc__errno_location,
 	libc_clock_gettime,
@@ -524,4 +522,131 @@ func syscall_syscall6(fn, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2, err ui
 //go:cgo_unsafe_args
 func syscall_rawSyscall6(fn, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2, err uintptr) {
 	return syscall_syscall6(fn, nargs, a1, a2, a3, a4, a5, a6)
+}
+
+// The following functions are used by package syscall's exec_libc.go via
+// linkname. They must not split the stack, because they run after fork in
+// the child process. Each one calls a libc function through a data slot.
+
+//go:linkname syscall_chdir syscall.chdir
+//go:nosplit
+func syscall_chdir(path uintptr) (err uintptr) {
+	_, err = syscall1(&libc_chdir, path)
+	return
+}
+
+//go:linkname syscall_chroot1 syscall.chroot1
+//go:nosplit
+func syscall_chroot1(path uintptr) (err uintptr) {
+	_, err = syscall1(&libc_chroot, path)
+	return
+}
+
+// like close, but must not split stack, for fork.
+//
+//go:linkname syscall_closeFD syscall.closeFD
+//go:nosplit
+func syscall_closeFD(fd uintptr) (err uintptr) {
+	_, err = syscall1(&libc_close, fd)
+	return
+}
+
+//go:linkname syscall_dup2child syscall.dup2child
+//go:nosplit
+func syscall_dup2child(old, new uintptr) (val, err uintptr) {
+	val, err = syscall2(&libc_dup2, old, new)
+	return
+}
+
+//go:linkname syscall_execve syscall.execve
+//go:nosplit
+func syscall_execve(path, argv, envp uintptr) (err uintptr) {
+	_, err = syscall3(&libc_execve, path, argv, envp)
+	return
+}
+
+// like exit, but must not split stack, for fork.
+//
+//go:linkname syscall_exit syscall.exit
+//go:nosplit
+func syscall_exit(code uintptr) {
+	syscall1(&libc_exit, code)
+}
+
+//go:linkname syscall_fcntl1 syscall.fcntl1
+//go:nosplit
+func syscall_fcntl1(fd, cmd, arg uintptr) (val, err uintptr) {
+	val, err = syscall3(&libc_fcntl, fd, cmd, arg)
+	return
+}
+
+//go:linkname syscall_forkx syscall.forkx
+//go:nosplit
+func syscall_forkx(flags uintptr) (pid uintptr, err uintptr) {
+	// Hurd's fork has no flags argument; the extra argument is ignored.
+	pid, err = syscall0(&libc_fork)
+	return
+}
+
+//go:linkname syscall_getpid syscall.getpid
+//go:nosplit
+func syscall_getpid() (pid, err uintptr) {
+	pid, err = syscall0(&libc_getpid)
+	return
+}
+
+//go:linkname syscall_ioctl syscall.ioctl
+//go:nosplit
+func syscall_ioctl(fd, req, arg uintptr) (err uintptr) {
+	_, err = syscall3(&libc_ioctl, fd, req, arg)
+	return
+}
+
+//go:linkname syscall_setgid syscall.setgid
+//go:nosplit
+func syscall_setgid(gid uintptr) (err uintptr) {
+	_, err = syscall1(&libc_setgid, gid)
+	return
+}
+
+//go:linkname syscall_setgroups1 syscall.setgroups1
+//go:nosplit
+func syscall_setgroups1(ngid, gid uintptr) (err uintptr) {
+	_, err = syscall2(&libc_setgroups, ngid, gid)
+	return
+}
+
+//go:linkname syscall_setrlimit1 syscall.setrlimit1
+//go:nosplit
+func syscall_setrlimit1(which uintptr, lim unsafe.Pointer) (err uintptr) {
+	_, err = syscall2(&libc_setrlimit, which, uintptr(lim))
+	return
+}
+
+//go:linkname syscall_setsid syscall.setsid
+//go:nosplit
+func syscall_setsid() (pid, err uintptr) {
+	pid, err = syscall0(&libc_setsid)
+	return
+}
+
+//go:linkname syscall_setuid syscall.setuid
+//go:nosplit
+func syscall_setuid(uid uintptr) (err uintptr) {
+	_, err = syscall1(&libc_setuid, uid)
+	return
+}
+
+//go:linkname syscall_setpgid syscall.setpgid
+//go:nosplit
+func syscall_setpgid(pid, pgid uintptr) (err uintptr) {
+	_, err = syscall2(&libc_setpgid, pid, pgid)
+	return
+}
+
+//go:linkname syscall_write1 syscall.write1
+//go:nosplit
+func syscall_write1(fd, buf, nbyte uintptr) (n, err uintptr) {
+	n, err = syscall3(&libc_write, fd, buf, nbyte)
+	return
 }

@@ -49,6 +49,7 @@ const (
 	Hwasip1
 	Hwindows
 	Haix
+	Hhurd
 )
 
 func (h *HeadType) Set(s string) error {
@@ -61,6 +62,8 @@ func (h *HeadType) Set(s string) error {
 		*h = Hdragonfly
 	case "freebsd":
 		*h = Hfreebsd
+	case "hurd":
+		*h = Hhurd
 	case "js":
 		*h = Hjs
 	case "linux", "android":
@@ -87,6 +90,8 @@ func (h HeadType) String() string {
 	switch h {
 	case Haix:
 		return "aix"
+	case Hhurd:
+		return "hurd"
 	case Hdarwin:
 		return "darwin"
 	case Hdragonfly:

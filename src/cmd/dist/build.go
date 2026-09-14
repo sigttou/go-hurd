@@ -88,6 +88,7 @@ var okgoarch = []string{
 var okgoos = []string{
 	"darwin",
 	"dragonfly",
+	"hurd",
 	"illumos",
 	"ios",
 	"js",
@@ -1775,6 +1776,7 @@ var cgoEnabled = map[string]bool{
 	"freebsd/arm":     true,
 	"freebsd/arm64":   true,
 	"freebsd/riscv64": true,
+	"hurd/386":        true,
 	"illumos/amd64":   true,
 	"linux/386":       true,
 	"linux/amd64":     true,

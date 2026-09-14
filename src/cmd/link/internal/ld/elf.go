@@ -205,6 +205,7 @@ type ELFArch struct {
 	Openbsddynld   string
 	Dragonflydynld string
 	Solarisdynld   string
+	Hurddynld      string
 
 	Reloc1    func(*Link, *OutBuf, *loader.Loader, loader.Sym, loader.ExtReloc, int, int64) bool
 	RelocSize uint32 // size of an ELF relocation record, must match Reloc1.
@@ -1967,6 +1968,9 @@ func asmbElf(ctxt *Link) {
 
 			case objabi.Hsolaris:
 				interpreter = thearch.ELF.Solarisdynld
+
+			case objabi.Hhurd:
+				interpreter = thearch.ELF.Hurddynld
 			}
 		}
 

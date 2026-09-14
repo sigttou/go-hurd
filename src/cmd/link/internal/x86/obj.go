@@ -65,6 +65,7 @@ func Init() (*sys.Arch, ld.Arch) {
 			Openbsddynld:   "/usr/libexec/ld.so",
 			Netbsddynld:    "/usr/libexec/ld.elf_so",
 			Solarisdynld:   "/lib/ld.so.1",
+			Hurddynld:      "/lib/ld.so.1",
 
 			Reloc1:    elfreloc1,
 			RelocSize: 8,

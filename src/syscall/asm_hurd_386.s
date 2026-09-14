@@ -212,3 +212,5 @@ DATA ·libc_write+0(SB)/4, $imp_libc_write(SB)
 GLOBL ·libc_write(SB), NOPTR, $4
 DATA ·libc_writev+0(SB)/4, $imp_libc_writev(SB)
 GLOBL ·libc_writev(SB), NOPTR, $4
+DATA ·libc_ioctl+0(SB)/4, $imp_libc_ioctl(SB)
+GLOBL ·libc_ioctl(SB), NOPTR, $4

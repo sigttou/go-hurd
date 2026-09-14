@@ -646,6 +646,18 @@ func readlen(fd int, buf *byte, nbuf int) (n int, err error) {
 	return
 }
 
+// Ioctl performs the ioctl(2) system call via glibc. GNU/Hurd has no raw
+// system-call interface for ioctl, so this is the only way for callers such
+// as interface/route configuration to issue one. req is the Hurd ioctl
+// request value and arg is the address of the caller-built request struct.
+func Ioctl(fd int, req uint, arg uintptr) (err error) {
+	_, _, e1 := syscall6(uintptr(unsafe.Pointer(&libc_ioctl)), 3, uintptr(fd), uintptr(req), arg, 0, 0, 0)
+	if e1 != 0 {
+		err = e1
+	}
+	return
+}
+
 /*
  * Map
  */

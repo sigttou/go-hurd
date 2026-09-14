@@ -507,3 +507,21 @@ func pthread_self() pthread {
 func signalM(mp *m, sig int) {
 	syscall2(&libpthread_kill, uintptr(pthread(mp.procid)), uintptr(sig))
 }
+
+// syscall_syscall6 and syscall_rawSyscall6 are used (via linkname) by the
+// syscall package. fn is the address of a data slot holding the resolved libc
+// function address.
+//
+//go:linkname syscall_syscall6
+//go:cgo_unsafe_args
+func syscall_syscall6(fn, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2, err uintptr) {
+	a := [6]uintptr{a1, a2, a3, a4, a5, a6}
+	r, e := syscallN((*libFunc)(unsafe.Pointer(fn)), &a)
+	return r, 0, e
+}
+
+//go:linkname syscall_rawSyscall6
+//go:cgo_unsafe_args
+func syscall_rawSyscall6(fn, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2, err uintptr) {
+	return syscall_syscall6(fn, nargs, a1, a2, a3, a4, a5, a6)
+}

@@ -305,6 +305,23 @@ func adddynrel(target *ld.Target, ldr *loader.Loader, syms *ld.ArchSyms, s loade
 			return true
 		}
 
+		// A data slot holding the address of an imported libc function
+		// (see runtime/sys_hurd_amd64.s). Emit an R_X86_64_64 dynamic
+		// relocation against the import so the dynamic linker writes the
+		// resolved address into the slot, then resolve the R_ADDR
+		// statically to the (zero) addend.
+		if target.IsElf() && target.IsHurd() && targType == sym.SDYNIMPORT {
+			ld.Adddynsym(ldr, target, syms, targ)
+			rela := ldr.MakeSymbolUpdater(syms.Rela)
+			rela.AddAddrPlus(target.Arch, s, int64(r.Off()))
+			rela.AddUint64(target.Arch, elf.R_INFO(uint32(ldr.SymDynid(targ)), uint32(elf.R_X86_64_64)))
+			rela.AddUint64(target.Arch, uint64(r.Add()))
+			su := ldr.MakeSymbolUpdater(s)
+			su.SetRelocType(rIdx, objabi.R_CONST) // write r->add during relocsym
+			su.SetRelocSym(rIdx, 0)
+			return true
+		}
+
 		// Process dynamic relocations for the data sections.
 		if target.IsPIE() && target.IsInternal() {
 			// When internally linking, generate dynamic relocations
@@ -349,7 +366,7 @@ func adddynrel(target *ld.Target, ldr *loader.Loader, syms *ld.ArchSyms, s loade
 			// linking, in which case the relocation will be
 			// prepared in the 'reloc' phase and passed to the
 			// external linker in the 'asmb' phase.
-			if t := ldr.SymType(s); !t.IsDATA() && !t.IsRODATA() {
+			if t := ldr.SymType(s); !t.IsData() && !t.IsRODATA() {
 				break
 			}
 		}

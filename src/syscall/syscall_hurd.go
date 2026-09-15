@@ -629,14 +629,6 @@ func raw_ptrace(request int, pid int, addr *byte, data *byte) Errno {
 
 //sys	gettimeofday(tv *Timeval, tzp *Timezone) (err error)
 
-func setTimespec(sec, nsec int64) Timespec {
-	return Timespec{Sec: int32(sec), Nsec: int32(nsec)}
-}
-
-func setTimeval(sec, usec int64) Timeval {
-	return Timeval{Sec: int32(sec), Usec: int32(usec)}
-}
-
 func readlen(fd int, buf *byte, nbuf int) (n int, err error) {
 	r0, _, e1 := syscall6(uintptr(unsafe.Pointer(&libc_read)), 3, uintptr(fd), uintptr(unsafe.Pointer(buf)), uintptr(nbuf), 0, 0, 0)
 	n = int(r0)

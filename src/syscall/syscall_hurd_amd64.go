@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build hurd && 386
+//go:build hurd && amd64
 
 package syscall
 
 func (iov *Iovec) SetLen(length int) {
-	iov.Len = uint32(length)
+	iov.Len = uint64(length)
 }
 
 func (msghdr *Msghdr) SetControllen(length int) {
@@ -19,9 +19,9 @@ func (cmsg *Cmsghdr) SetLen(length int) {
 }
 
 func setTimespec(sec, nsec int64) Timespec {
-	return Timespec{Sec: int32(sec), Nsec: int32(nsec)}
+	return Timespec{Sec: sec, Nsec: nsec}
 }
 
 func setTimeval(sec, usec int64) Timeval {
-	return Timeval{Sec: int32(sec), Usec: int32(usec)}
+	return Timeval{Sec: sec, Usec: usec}
 }

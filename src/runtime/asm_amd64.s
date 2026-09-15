@@ -250,6 +250,11 @@ needtls:
 	// skip TLS setup on OpenBSD
 	JMP ok
 #endif
+#ifdef GOOS_hurd
+	// skip TLS setup on Hurd: glibc owns the TLS base (there is no
+	// arch_prctl), so do not run settls or probe 0(FS).
+	JMP ok
+#endif
 
 #ifdef GOOS_windows
 	CALL	runtime·wintls(SB)

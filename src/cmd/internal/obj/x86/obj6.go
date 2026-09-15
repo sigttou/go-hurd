@@ -63,6 +63,10 @@ func CanUse1InsnTLS(ctxt *obj.Link) bool {
 	switch ctxt.Headtype {
 	case objabi.Hplan9, objabi.Hwindows:
 		return false
+	case objabi.Hhurd:
+		// GNU/Hurd has no arch_prctl; glibc owns the TLS base, so the
+		// 2-instruction (initial-exec) form is used.
+		return false
 	case objabi.Hlinux, objabi.Hfreebsd:
 		return !ctxt.Flag_shared
 	}

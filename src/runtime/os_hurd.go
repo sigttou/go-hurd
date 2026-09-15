@@ -54,8 +54,7 @@ func semasleep(ns int64) int32 {
 			sec++
 			nsec -= 1e9
 		}
-		ts.tv_sec = int32(sec)
-		ts.tv_nsec = int32(nsec)
+		ts.set(sec, nsec)
 
 		if r, err := sem_timedwait((*semt)(unsafe.Pointer(mp.waitsema)), &ts); r != 0 {
 			if err == _ETIMEDOUT || err == _EAGAIN || err == _EINTR {

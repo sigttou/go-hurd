@@ -189,7 +189,7 @@ func (ln *UnixListener) close() error {
 	// programs that can mess us up.
 	// Even if there are racy calls to Close, we want to unlink only for the first one.
 	ln.unlinkOnce.Do(func() {
-		if ln.path[0] != '@' && ln.unlink {
+		if len(ln.path) > 0 && ln.path[0] != '@' && ln.unlink {
 			syscall.Unlink(ln.path)
 		}
 	})
@@ -227,7 +227,7 @@ func (sl *sysListener) listenUnix(ctx context.Context, laddr *UnixAddr) (*UnixLi
 	if err != nil {
 		return nil, err
 	}
-	return &UnixListener{fd: fd, path: fd.laddr.String(), unlink: true}, nil
+	return &UnixListener{fd: fd, path: laddr.Name, unlink: true}, nil
 }
 
 func (sl *sysListener) listenUnixgram(ctx context.Context, laddr *UnixAddr) (*UnixConn, error) {

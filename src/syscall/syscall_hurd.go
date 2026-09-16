@@ -320,6 +320,16 @@ func Fsync(fd int) error {
 //sys	recvmsg(s int, msg *Msghdr, flags int) (n int, err error)
 //sys	sendmsg(s int, msg *Msghdr, flags int) (n int, err error)
 
+// GetsockoptUcred retrieves the credentials of the peer connected to the
+// socket, as reported by SO_PEERCRED.  GNU/Hurd AF_LOCAL sockets have no way
+// to learn the peer's pid, so it is reported as 0 (unknown).
+func GetsockoptUcred(fd, level, opt int) (*Ucred, error) {
+	var value Ucred
+	vallen := _Socklen(SizeofUcred)
+	err := getsockopt(fd, level, opt, unsafe.Pointer(&value), &vallen)
+	return &value, err
+}
+
 func (sa *SockaddrInet4) sockaddr() (unsafe.Pointer, _Socklen, error) {
 	if sa.Port < 0 || sa.Port > 0xFFFF {
 		return nil, 0, EINVAL

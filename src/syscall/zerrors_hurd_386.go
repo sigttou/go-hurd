@@ -1011,7 +1011,7 @@ const (
 	SO_OOBINLINE                     = _SO_OOBINLINE
 	SO_PASSCRED                      = 0x10
 	SO_PASSSEC                       = 0x22
-	SO_PEERCRED                      = 0x11
+	SO_PEERCRED                      = 0x1009
 	SO_PEERNAME                      = 0x1c
 	SO_PEERSEC                       = 0x1f
 	SO_PRIORITY                      = 0xc

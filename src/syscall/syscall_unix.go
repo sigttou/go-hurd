@@ -108,8 +108,10 @@ func (m *mmapper) Munmap(data []byte) (err error) {
 type Errno uintptr
 
 func (e Errno) Error() string {
-	if 0 <= int(e) && int(e) < len(errors) {
-		s := errors[e]
+	// On most platforms errnoBase is 0; GNU/Hurd offsets its errno codes,
+	// so strip the base before indexing the errors table.
+	if i := int(e) - errnoBase; i >= 0 && i < len(errors) {
+		s := errors[i]
 		if s != "" {
 			return s
 		}

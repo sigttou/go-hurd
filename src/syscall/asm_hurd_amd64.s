@@ -214,3 +214,9 @@ DATA ·libc_writev+0(SB)/8, $imp_libc_writev(SB)
 GLOBL ·libc_writev(SB), NOPTR, $8
 DATA ·libc_ioctl+0(SB)/8, $imp_libc_ioctl(SB)
 GLOBL ·libc_ioctl(SB), NOPTR, $8
+DATA ·libc_getpgid+0(SB)/8, $imp_libc_getpgid(SB)
+GLOBL ·libc_getpgid(SB), NOPTR, $8
+DATA ·libc_tcgetpgrp+0(SB)/8, $imp_libc_tcgetpgrp(SB)
+GLOBL ·libc_tcgetpgrp(SB), NOPTR, $8
+DATA ·libc_tcsetpgrp+0(SB)/8, $imp_libc_tcsetpgrp(SB)
+GLOBL ·libc_tcsetpgrp(SB), NOPTR, $8

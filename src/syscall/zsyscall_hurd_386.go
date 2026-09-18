@@ -106,6 +106,9 @@ import "unsafe"
 //go:cgo_import_dynamic imp_libc_mmap mmap "libc.so.0.3"
 //go:cgo_import_dynamic imp_libc_munmap munmap "libc.so.0.3"
 //go:cgo_import_dynamic imp_libc_ioctl ioctl "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_getpgid getpgid "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_tcgetpgrp tcgetpgrp "libc.so.0.3"
+//go:cgo_import_dynamic imp_libc_tcsetpgrp tcsetpgrp "libc.so.0.3"
 
 
 type libcFunc uintptr
@@ -209,6 +212,9 @@ var (
 	libc_gettimeofday,
 	libc_mmap,
 	libc_munmap,
+	libc_getpgid,
+	libc_tcgetpgrp,
+	libc_tcsetpgrp,
 	libc_ioctl libcFunc
 )
 
@@ -1394,6 +1400,32 @@ func mmap32(addr uintptr, length uintptr, prot int, flag int, fd int, pos uintpt
 
 func munmap(addr uintptr, length uintptr) (err error) {
 	_, _, e1 := syscall6(uintptr(unsafe.Pointer(&libc_munmap)), 2, uintptr(addr), uintptr(length), 0, 0, 0, 0)
+	if e1 != 0 {
+		err = errnoErr(e1)
+	}
+	return
+}
+
+func Getpgid(pid int) (pgid int, err error) {
+	r0, _, e1 := syscall6(uintptr(unsafe.Pointer(&libc_getpgid)), 1, uintptr(pid), 0, 0, 0, 0, 0)
+	pgid = int(r0)
+	if e1 != 0 {
+		err = errnoErr(e1)
+	}
+	return
+}
+
+func Tcgetpgrp(fd int) (pgrp int, err error) {
+	r0, _, e1 := syscall6(uintptr(unsafe.Pointer(&libc_tcgetpgrp)), 1, uintptr(fd), 0, 0, 0, 0, 0)
+	pgrp = int(r0)
+	if e1 != 0 {
+		err = errnoErr(e1)
+	}
+	return
+}
+
+func Tcsetpgrp(fd int, pgrp int) (err error) {
+	_, _, e1 := syscall6(uintptr(unsafe.Pointer(&libc_tcsetpgrp)), 2, uintptr(fd), uintptr(pgrp), 0, 0, 0, 0)
 	if e1 != 0 {
 		err = errnoErr(e1)
 	}

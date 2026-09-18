@@ -46,8 +46,10 @@ func _() {
 	// fcntl file locking structure and constants
 	var (
 		_ = syscall.Flock_t{
-			Type:   int16(0),
-			Whence: int16(0),
+			// Type and Whence are int16 on most systems but int32 on
+			// some (e.g. GNU/Hurd i386), so leave them untyped.
+			Type:   0,
+			Whence: 0,
 			Start:  int64(0),
 			Len:    int64(0),
 			Pid:    int32(0),
@@ -71,6 +73,12 @@ func _() {
 func TestFcntlFlock(t *testing.T) {
 	if runtime.GOOS == "ios" {
 		t.Skip("skipping; no child processes allowed on iOS")
+	}
+	if runtime.GOOS == "hurd" {
+		// GNU/Hurd record locks follow the open file description (and do
+		// not report the owning pid), so the inherited fd in the child does
+		// not conflict as this test assumes.
+		t.Skip("skipping; Hurd record locks follow the open file description")
 	}
 	flock := syscall.Flock_t{
 		Type:  syscall.F_WRLCK,

@@ -280,12 +280,7 @@ func ReadDirent(fd int, buf []byte) (n int, err error) {
 func Wait4(pid int, wstatus *WaitStatus, options int, rusage *Rusage) (wpid int, err error) {
 	var status _C_int
 	var r _Pid_t
-	err = ERESTART
-	// Hurd wait4 may return with ERESTART errno, while the process is still
-	// active.
-	for err == ERESTART {
-		r, err = wait4(_Pid_t(pid), &status, options, rusage)
-	}
+	r, err = wait4(_Pid_t(pid), &status, options, rusage)
 	wpid = int(r)
 	if wstatus != nil {
 		*wstatus = WaitStatus(status)
@@ -596,6 +591,16 @@ func raw_ptrace(request int, pid int, addr *byte, data *byte) Errno {
 //sys	Geteuid() (euid int)
 //sys	Getegid() (egid int)
 //sys	Getppid() (ppid int)
+//sys	Getpgid(pid int) (pgid int, err error) = getpgid
+
+// Getpgrp returns the process group ID of the calling process.
+func Getpgrp() (pid int) {
+	pid, _ = Getpgid(0)
+	return
+}
+
+//sys	Tcgetpgrp(fd int) (pgrp int, err error) = tcgetpgrp
+//sys	Tcsetpgrp(fd int, pgrp int) (err error) = tcsetpgrp
 //sys	Getpriority(which int, who int) (n int, err error)
 //sysnb	Getrlimit(which int, lim *Rlimit) (err error) = getrlimit64
 //sysnb	Getrusage(who int, rusage *Rusage) (err error)
